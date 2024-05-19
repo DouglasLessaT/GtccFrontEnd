@@ -48,6 +48,8 @@
         justify-content: center;
         box-shadow: 0 0 1000px 0  #09a6a38e;
         display: flex;
+        border-style: solid;
+        border-color: #09a6a3;
     }
 
     .head{
@@ -81,5 +83,8 @@
     .btn-action:hover{
         background-color: #09a6a3;
         color: #ffffff;
+        border-style: solid;
+        border-color: #ffffff;
+        border-width: 2px; 
     }
 </style>
