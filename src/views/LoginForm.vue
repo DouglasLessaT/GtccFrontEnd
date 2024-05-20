@@ -22,6 +22,7 @@
 
 <script>
 import { useRouter } from 'vue-router';
+import DashBoard from './DashBoard.vue';
 
 export default {
   name: 'LoginForm',
@@ -33,7 +34,7 @@ export default {
       const password = document.getElementById('pwd').value;
 
       if (username === 'admin' && password === 'admin') {
-        router.push('./components/DashBoard'); // Navega para a rota desejada
+        router.push(DashBoard); // Navega para a rota desejada
       } else {
         alert('Usuário ou senha incorretos');
       }
@@ -45,50 +46,51 @@ export default {
 </script>
 
 <style>
-      /* Layout Geral */
+
   body{
-      margin: 0;
-      padding: 0;
+    margin: 0;
+    padding: 0;
   }
 
   .container{
-      width: 100%;
-      height: 100vh;
-      background: #FCF9D8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background: #FCF9D8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-default{
-      cursor: pointer;
-      background-color: #000;
-      width: 310px;
-      height: 35px;
-      padding: 0px;
-      padding-right: 10px;
-      color: white;
-      text-align: right;
-      font-size: x-large;
+    cursor: pointer;
+    background-color: #000;
+    width: 310px;
+    height: 35px;
+    padding: 0px;
+    padding-right: 10px;
+    color: white;
+    text-align: right;
+    font-size: x-large;
   }
   .btn-default:hover{
-      background-color: #ffffff;
-      color: #000;
-      border: #0000005e solid 1px;
+    background-color: #ffffff;
+    color: #000;
+    border: #0000005e solid 1px;
   }
 
   h1{
-      font-family: "Poiret One", sans-serif;
-      font-size: 40px;
-      color: white;
+    font-family: "Poiret One", sans-serif;
+    font-size: 40px;
+    color: white;
   }
 
   /* Page Login */
-  .container-signin{
-      background-image: url(../assets/33\ 1.png);
-      background-repeat: no-repeat;
-      background-size: cover;
-      font-family: "Poiret One", sans-serif;
+  .container-signin {
+    background-image: url(../assets/logintela.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: "Poiret One", sans-serif;
   }
 
   .sec-login {

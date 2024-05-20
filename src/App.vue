@@ -1,28 +1,25 @@
 <template>
-  <div class="app">
-    <NavBarComponents />
-    <DashBoard />
-    <!--<LoginForm />-->
-    <FooterComponents />
-  </div>
-  
+  <NavBarComponents />
+  <router-link to="/">
+    Login
+  </router-link>
+  <router-link to="/dashboard">
+    DashBoard
+  </router-link>
+  <FooterComponents />
+
+  <router-view />
 </template>
 
 <script>
-  //import LoginForm from './views/LoginForm.vue';
-  import DashBoard from './views/DashBoard.vue';
+
   import NavBarComponents from './components/NavBarComponents.vue';
   import FooterComponents from './components/FooterComponents.vue';
-  
-
-  
 
   export default {
     name: 'App',
     components: {
       NavBarComponents,
-      DashBoard,
-      //LoginForm,
       FooterComponents
     }
   }
