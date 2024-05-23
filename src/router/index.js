@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginForm from '../views/LoginForm.vue';
 import DashBoard from '../views/DashBoard.vue';
+import CadastroTcc from '../views/CadastroTcc.vue';
 
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     {
     path: "/dashboard",
     component: DashBoard
+    },
+   
+    {
+    path: "/cadastrotcc",
+    component: CadastroTcc
     },
 ];
 
