@@ -11,7 +11,8 @@
       <div class="input-container">
        <input type="number" class="input-preencher1" />
        <input type="text" class="input-preencher2" />
-       <input type="text" class="input-preencher3" /> 
+       <input type="text" class="input-preencher3" />
+       <textarea class="textarea"></textarea> 
       </div>
      </div>
     </div>
@@ -106,4 +107,10 @@ body {
  margin: 10px 0; 
 }
 
+.textarea {
+ width: 80%; 
+ height: 100px; 
+ margin: 10px 0; 
+ resize: none;
+}
 </style>
