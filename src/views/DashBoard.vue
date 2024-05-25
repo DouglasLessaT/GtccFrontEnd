@@ -3,9 +3,12 @@
         <main>
             <section class="Dash">
                 <div class="container-dash">
-                    <div class="flex">
-                        <div class="head"> DashBoard
-                            <button class="btn-action">+</button>
+                    <div class="flex-dash">
+                        <div class="head-dash"> DashBoard
+                            <button class="btn-action-dash">+</button>
+                            <div class="input-dash">
+                                <input type="text" class="input-pesquisa-dash" placeholder="Pesquisar Tcc">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -26,7 +29,7 @@
       padding: 0;
     }
 
-    .flex{
+    .flex-dash{
         display: flex;
     }
 
@@ -39,7 +42,7 @@
         justify-content: center;
     }
 
-    .flex{
+    .flex-dash{
         width:750px;
         height: 450px;
         background-color: white;
@@ -52,19 +55,19 @@
         border-color: #09a6a3;
     }
 
-    .head{
+    .head-dash{
         background-color: #09a6a3;
         align-items: center;
-        justify-content: center;
         width: 100%;
         height: 35px;
         font-size: 30px;
         color: white; 
         font-family: "Poiret One", sans-serif;
-        top: 0px;
+        
+        text-align: center;
     }
 
-    .btn-action{
+    .btn-action-dash{
         position: relative;
         background-color: #ffffff;
         border: #09a6a3 solid 1px;
@@ -77,14 +80,21 @@
         cursor: pointer;
         font-size: xx-large;
         color: #09a6a3;
-        left: 180px;
-        top: 7px;
+        left: 633px;
+        top: -19px;
     }
-    .btn-action:hover{
+    .btn-action-dash:hover{
         background-color: #09a6a3;
         color: #ffffff;
         border-style: solid;
         border-color: #ffffff;
         border-width: 2px; 
     }
+
+    .input-pesquisa-dash{
+        width: 80%;
+        margin: 5px 0;
+    }
+    
+    
 </style>
