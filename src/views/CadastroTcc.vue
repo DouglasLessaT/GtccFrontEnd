@@ -1,18 +1,18 @@
 <template>
  <body>
   <main>
-   <section class="Dash">
-    <div class="container">
-     <div class="flex">
+   <section class="Dash-cadastrotcc">
+    <div class="container-cadastrotcc">
+     <div class="flex-cadastrotcc">
       <div class="head">
        Cadastro TCC
        <button class="btn-action">+</button>
       </div>
-      <div class="input-container">
-       <input type="number" class="input-preencher1" />
-       <input type="text" class="input-preencher2" />
-       <input type="text" class="input-preencher3" />
-       <textarea class="textarea"></textarea> 
+      <div class="input-container-cadastrotcc">
+       <input type="number" class="input-preencher1-tcc" placeholder="Número de TCC" />
+       <input type="text" class="input-preencher2-tcc" placeholder="Titulo do TCC" />
+       <input type="text" class="input-preencher3-tcc" placeholder="Subtitulo do TCC" />
+       <textarea class="textarea-tcc" placeholder="Digite um resumo sobre o seu TCC"></textarea> 
       </div>
      </div>
     </div>
@@ -33,7 +33,7 @@ body {
  padding: 0;
 }
 
-.container {
+.container-cadastrotcc {
  width: 100%;
  height: 100vh;
  background: #f8f8f8;
@@ -42,7 +42,7 @@ body {
  justify-content: center;
 }
 
-.flex {
+.flex-cadastrotcc {
  width: 750px;
  height: 450px; 
  background-color: white;
@@ -91,7 +91,7 @@ body {
  border-width: 2px;
 }
 
-.input-container {
+.input-container-cadastrotcc {
  display: flex;
  flex-direction: column; 
  align-items: center; 
@@ -100,14 +100,14 @@ body {
  height: 100%; 
 }
 
-.input-preencher1,
-.input-preencher2,
-.input-preencher3 {
+.input-preencher1-tcc,
+.input-preencher2-tcc,
+.input-preencher3-tcc {
  width: 80%; 
  margin: 10px 0; 
 }
 
-.textarea {
+.textarea-tcc {
  width: 80%; 
  height: 100px; 
  margin: 10px 0; 
