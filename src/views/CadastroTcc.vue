@@ -4,7 +4,7 @@
    <section class="Dash-cadastrotcc">
     <div class="container-cadastrotcc">
      <div class="flex-cadastrotcc">
-      <div class="head">
+      <div class="head-cadastro-tcc">
        Cadastro TCC
        <button class="btn-action">+</button>
       </div>
@@ -54,7 +54,7 @@ body {
  border-color: #09a6a3;
 }
 
-.head {
+.head-cadastro-tcc {
  background-color: #09a6a3;
  display: flex;
  align-items: center;

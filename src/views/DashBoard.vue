@@ -2,7 +2,7 @@
     <body>
         <main>
             <section class="Dash">
-                <div class="container">
+                <div class="container-dash">
                     <div class="flex">
                         <div class="head"> DashBoard
                             <button class="btn-action">+</button>
@@ -30,7 +30,7 @@
         display: flex;
     }
 
-    .container{
+    .container-dash{
         width: 100%;
         height: 100vh;
         background: #f8f8f8;
@@ -41,7 +41,7 @@
 
     .flex{
         width:750px;
-        height: 400px;
+        height: 450px;
         background-color: white;
         display: grid;
         align-items: top;
