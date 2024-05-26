@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginForm from '../views/LoginForm.vue';
 import DashBoard from '../views/DashBoard.vue';
 import CadastroTcc from '../views/CadastroTcc.vue';
+import CadastroAluno from '@/views/CadastroAluno.vue';
 
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     {
     path: "/cadastrotcc",
     component: CadastroTcc
+    },
+
+    {
+    path: "/cadastroaluno",
+    component: CadastroAluno
     },
 ];
 

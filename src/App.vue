@@ -9,6 +9,9 @@
   <router-link to="/cadastrotcc">
     CadastroTcc
   </router-link>
+  <router-link to="/cadastroaluno">
+    CadastroAluno
+  </router-link>
   <FooterComponents />
 
   <router-view />
