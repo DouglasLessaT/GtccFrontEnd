@@ -1,16 +1,12 @@
 <template>
   <NavBarComponents />
   <router-link to="/">
-    Login
   </router-link>
   <router-link to="/dashboard">
-    DashBoard
   </router-link>
   <router-link to="/cadastrotcc">
-    CadastroTcc
   </router-link>
   <router-link to="/cadastroaluno">
-    CadastroAluno
   </router-link>
   <FooterComponents />
 
