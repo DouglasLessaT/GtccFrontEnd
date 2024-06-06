@@ -2,9 +2,7 @@
  <body>
      <div class="container">    
          <div class="workspace workspace-CadAluno">
-             <div class="head">Cadastro de Alunos
-                 <button class="btn-action">></button>
-             </div>
+             <div class="head">Cadastro de Alunos <button class="btn-action">></button></div>
          
              <div class="forms">
                  <form class="form-addaluno">
@@ -13,9 +11,9 @@
                      <input v-model="dataNascimento" class="input-addaluno" type="date" placeholder="Data de Nascimento" @input="limitarAno">
                      <input v-model="contato" class="input-addaluno" type="tel" placeholder="Contato">
                      <div class="button-group">
-                         <input class="btn-default btn-search" type="button" value="ADD" @click="adicionarAluno" :disabled="limiteAlcancado">
-                         <input class="btn-default btn-search" type="button" value="ATUALIZAR" @click="atualizarAluno" :disabled="!alunoSelecionado">
-                         <input class="btn-default btn-search" type="button" value="EXCLUIR" @click="excluirAluno" :disabled="!alunoSelecionado">
+                         <input class="btn-default btn-search" type="button" value="Adicionar" @click="adicionarAluno" :disabled="limiteAlcancado">
+                         <input class="btn-default btn-search" type="button" value="Atualizar" @click="atualizarAluno" :disabled="!alunoSelecionado">
+                         <input class="btn-default btn-search" type="button" value="Excluir" @click="excluirAluno" :disabled="!alunoSelecionado">
                      </div>
                  </form>
                  <table class="custom-table">
@@ -146,6 +144,7 @@ export default {
  width: 160px; 
  text-align: center;
  margin-bottom: 10px;
+ border-radius: 5px;
 }
 
 .custom-table {
@@ -226,9 +225,10 @@ export default {
      background-color: #009688;
      color: white;
      position: relative;
+     height: 80px;
  }
 
- .btn-action {
+ /*.btn-action {
      background-color: #ffffff;
      border: #09a6a3 solid 1px;
      border-radius: 50%;
@@ -244,6 +244,24 @@ export default {
      right: 10px; 
      top: 50%; 
      margin-left: 180px;
+ }*/
+
+ .btn-action {
+     background-color: #ffffff;
+     border: #09a6a3 solid 1px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 35px;
+     height: 35px;
+     cursor: pointer;
+     font-size: large;
+     color: #09a6a3;
+     margin-top: 35px;
+     
+     position: relative;
+     margin-right: 100px;
  }
 
  .btn-action:hover {
