@@ -45,6 +45,34 @@ setup() {
 
 <style scoped>
 
+@media screen and (max-width: 870px){
+  .sec-login{
+  margin-right: auto
+  }
+}
+
+@media screen and (max-width: 420px){
+  .sec-login {
+    width: 220px;
+    height: 260px;
+    margin: 30px;
+    padding: 30px;
+}
+
+  input {
+    margin-bottom: 30px;
+    padding: 5px;
+    width: 240px;
+    height: 25px;
+}
+  input.btn-default{
+    width: 250px;
+    height: 30px;
+    text-align: center;
+    font-size: 21px;
+}
+}
+
 .btn-default{
   cursor: pointer;
   background-color: #000;
@@ -55,6 +83,7 @@ setup() {
   color: white;
   text-align: right;
   font-size: x-large;
+  border-radius: 10px;
 }
 .btn-default:hover{
   background-color: #ffffff;
