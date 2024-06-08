@@ -131,7 +131,7 @@ td {
 }
 
 .sec-login {
-    background-color: rgba(9, 166, 163, 1);
+    background-color: rgb(54, 138, 136);
     width: 300px;
     display: flex;
     align-items: center;
