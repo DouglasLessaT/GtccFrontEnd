@@ -5,6 +5,7 @@ import CadastroTcc from '../views/CadastroTcc.vue';
 import CadastroAluno from '../views/CadastroAluno.vue';
 import CadastroBanca from '../views/CadastroBanca.vue';
 import ConfirmaRelatorio from '../views/ConfirmaRelatorio.vue';
+import NaoAutorizado from '../views/NaoAutorizadoView.vue'
 
 import LoginService from '../services/LoginService'
 import AuthService from '@/services/AuthService'
@@ -16,37 +17,41 @@ const routes = [
     component: LoginForm
     },
 
-    //{
-    //path: '/nao-autorizado',
-    //name: 'nao-autorizado',
-    //component: NaoAutorizadoView
-    //},
+    {
+      path: "/",
+      name: 'dashboard',
+      component: DashBoard
+    },
 
     {
-    path: "/",
-    name: 'dashboard',
-    component: DashBoard
+      path: "/cadastroaluno",
+      name: 'cadastroaluno',
+      component: CadastroAluno
     },
    
     {
-    path: "/cadastrotcc",
-    component: CadastroTcc
+      path: "/cadastrotcc",
+      name: 'cadastrotcc',
+      component: CadastroTcc
     },
 
     {
-    path: "/cadastroAluno",
-    component: CadastroAluno
+      path: "/cadastrobanca",
+      name: 'cadastrobanca',
+      component: CadastroBanca
     },
 
     {
-    path: "/CadastroBanca",
-    component: CadastroBanca
+      path: "/confirmarelatorio",
+      name: 'confirmarelatorio',
+      component: ConfirmaRelatorio
     },
 
     {
-        path: "/ConfirmaRelatorio",
-        component: ConfirmaRelatorio
-        },
+      path: '/nao-autorizado',
+      name: 'nao-autorizado',
+      component: NaoAutorizado
+    },
 ];
 
 const router = createRouter({

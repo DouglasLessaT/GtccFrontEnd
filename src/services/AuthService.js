@@ -1,13 +1,19 @@
 class AuthService {
 
     auths = [{
-     path: '/', roles: ['ROLE_ADMIN', 'ROLE_USER']
-    }, {
-     path: '/dashboard', roles: ['ROLE_USER']
-    }, {
-     path: '/tarefas', roles: ['ROLE_TAREFAS']
-    }, {
-     path: '/usuarios', roles: ['ROLE_ADMIN']
+        path: '/', roles: ['ROLE_USER','ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR', 'ROLE_ALUNO']
+    },
+    {
+        path: '/cadastroaluno', roles: ['ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR']
+    },
+    {
+        path: '/cadastrotcc', roles: ['ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR']
+    },
+    {
+        path: '/cadastrobanca', roles: ['ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR']
+    },
+    {
+        path: '/confirmarelatorio', roles: ['ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR'] 
     }]
    
     dadosAutenticado = () => {
