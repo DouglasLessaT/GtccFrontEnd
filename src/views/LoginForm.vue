@@ -11,7 +11,7 @@
             placeholder="Usuário" v-model="login"
           /><br />
           <input type="password" id="pwd" name="pwd" placeholder="Senha" v-model="senha"/>
-          <p v-if="erro">{{ erro }}</p>
+          <p v-if="erro" :class="{ 'erro': erro }">{{ erro }}</p>
         </div>
         <input class="btn-default" type="button" value="Acessar" @click="logar"/>
       </form>
@@ -85,7 +85,6 @@ export default {
   background-color: #000;
   width: 310px;
   height: 35px;
-  padding: 0px;
   padding-right: 10px;
   color: white;
   text-align: right;
@@ -118,4 +117,13 @@ h1{
   justify-content: center;
  }
 
+
+
+ .erro {
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 0px;
+  text-align: center;
+}
 </style>

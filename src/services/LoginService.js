@@ -35,7 +35,7 @@ class LoginService {
             if (error.response && error.response.data && error.response.data.message) {
               onError(error.response.data.message); // Passe a mensagem de erro específica para o callback de erro
             } else {
-              onError("Usuario / Senha invalidos!"); // Mensagem genérica de erro
+              onError("Usuário/Senha Inválidos!"); // Mensagem genérica de erro
             }
           });
         };
