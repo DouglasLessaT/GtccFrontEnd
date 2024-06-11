@@ -8,40 +8,47 @@
             type="text"
             id="username"
             name="username"
-            placeholder="Usuário"
+            placeholder="Usuário" v-model="login"
           /><br />
-          <input type="password" id="pwd" name="pwd" placeholder="Senha" />
+          <input type="password" id="pwd" name="pwd" placeholder="Senha" v-model="senha"/>
+          <p v-if="erro">{{ erro }}</p>
         </div>
-        <input class="btn-default" type="button" value="Acessar" @click="login"/>
+        <input class="btn-default" type="button" value="Acessar" @click="logar"/>
       </form>
     </section>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
-import DashBoard from './DashBoard.vue';
+import LoginService from "@/services/LoginService";
+
 
 export default {
-name: 'LoginForm',
-setup() {
-  const router = useRouter();
-
-  const login = () => {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('pwd').value;
-
-    if (username === 'admin' && password === 'admin') {
-      router.push(DashBoard); // Navega para a rota desejada
-    } else {
-      alert('Usuário ou senha incorretos');
-    }
-  };
-
-  return { login };
-},
+    data() {
+     return {
+      login: "",
+      senha: "",
+      erro: "", // Variável para armazenar a mensagem de erro
+     };
+    },
+    methods: {
+     logar() {
+      LoginService.logar(
+       this.login,
+       this.senha,
+       () => { // Callback de sucesso
+         this.erro = ""; // Limpa a mensagem de erro
+       },
+       (err) => { // Callback de erro
+         this.erro = err; // Define a mensagem de erro
+       }
+      );
+     },
+    },
 };
+
 </script>
+
 
 <style scoped>
 
