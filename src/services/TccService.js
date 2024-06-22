@@ -1,11 +1,8 @@
-// services/TccService.js
 import axios from "axios";
 import AuthService from "./AuthService";
 
-
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/tcc";
-const baseURLGetAlunos =
-  "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
+const baseURLGetAlunos = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
 
 class TccService {
   parser(obj) {
@@ -24,13 +21,9 @@ class TccService {
     console.log("Teste II", tccAfterParse);
     try {
       const url = `${baseURL}`;
-      //const response = await axios.post(url, tcc);
-      const response = await axios(url, {
-        method: "POST",
-        data: JSON.stringify(tccAfterParse),
+      const response = await axios.post(url, tccAfterParse, {
         headers: {
-          Authorization:
-            `Bearer ${AuthService.dados.token}`,
+          Authorization: `Bearer ${AuthService.dados.token}`,
           "Content-Type": "application/json",
         },
       });
@@ -43,17 +36,12 @@ class TccService {
   async buscarAlunos() {
     try {
       const url = `${baseURLGetAlunos}`;
-      const response = await axios.get(url);
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${AuthService.dados.token}`,
+        },
+      });
       return response.data;
-    } catch (error) {
-      throw new Error(`Erro ao buscar alunos: ${error.message}`);
-    }
-  }
-
-  buscarAlunos2() {
-    try {
-      const url = `${baseURLGetAlunos}`;
-      return axios.get(url);
     } catch (error) {
       throw new Error(`Erro ao buscar alunos: ${error.message}`);
     }
