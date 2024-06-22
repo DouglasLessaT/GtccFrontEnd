@@ -59,14 +59,6 @@ class TccService {
     }
   }
 
-  buscarProfessor() {
-    try {
-      const url = `${baseURLGetAlunos}`;
-      return axios.get(url);
-    } catch (error) {
-      throw new Error(`Erro ao buscar alunos: ${error.message}`);
-    }
-  }
 
 }
 

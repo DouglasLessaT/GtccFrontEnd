@@ -1,132 +1,150 @@
 <template>
- <div class="container">
-  <div class="workspace">
-   <div class="head">
-    Cadastro de TCC
-    <button class="btn-action">></button>
-   </div>
-   <div class="forms">
-    <form @submit.prevent="submitForm" class="form-cadtcc">
-     <div class="input-container-cadastrotcc">
-      <input
-       type="text"
-       class="input-preencher2-tcc"
-       placeholder="Titulo do TCC"
-       v-model="tcc.titulo"
-      />
-      <input
-       type="text"
-       class="input-preencher2-tcc"
-       placeholder="Curso"
-       v-model="tcc.curso"
-      />
-      <input
-       type="text"
-       class="input-preencher3-tcc"
-       placeholder="Tema"
-       v-model="tcc.tema"
-      />
-      <select class="select-preencher4-tcc" v-model="tcc.aluno">
-       <option value="">Selecione um aluno</option>
-       <option v-for="aluno in alunos" :key="aluno.id" :value="aluno.id">
-        {{ aluno.name }}
-       </option>
-      </select>
-      <input
-       type="number"
-       class="input-preencher1-tcc"
-       placeholder="Número de TCC"
-       v-model="tcc.numero"
-      />
-     </div>
-     <button type="submit" class="btn-submit">Enviar</button>
-    </form>
-   </div>
+  <div class="container">
+    <div class="workspace workspace-CadAluno">
+      <div class="head">
+        Cadastro de Usuário <button class="btn-action">></button>
+      </div>
+      <div class="forms">
+        <form class="form-addaluno" @submit.prevent="submitForm">
+          <input
+            v-model="name"
+            class="input-addaluno"
+            type="text"
+            placeholder="Nome Completo"
+            required
+          />
+          <input
+            v-model="email"
+            class="input-addaluno"
+            type="email"
+            placeholder="Email"
+            required
+          />
+          <input
+            v-model="birthdate"
+            class="input-addaluno"
+            type="date"
+            placeholder="Data de Nascimento"
+            @input="limitarAno"
+            required
+          />
+          <input
+            v-model="cellphone"
+            class="input-addaluno"
+            type="tel"
+            placeholder="Contato"
+            required
+          />
+          <div class="button-group">
+            <button type="submit" class="btn-default btn-search">Adicionar</button>
+            <button
+              type="button"
+              class="btn-default btn-search"
+              @click="atualizarUsuario"
+              :disabled="!usuarioSelecionado"
+            >
+              Atualizar
+            </button>
+            <button
+              type="button"
+              class="btn-default btn-search"
+              @click="excluirUsuario"
+              :disabled="!usuarioSelecionado"
+            >
+              Excluir
+            </button>
+          </div>
+        </form>
+        <table class="custom-table">
+          <tr class="table-title">
+            <td>Nome</td>
+            <td>Email</td>
+            <td>Data de nascimento</td>
+            <td>Contato</td>
+          </tr>
+          <tr v-if="usuarios.length === 0">
+            <td colspan="4" style="text-align: center">Nenhum usuário cadastrado.</td>
+          </tr>
+          <tr
+            v-else
+            v-for="(usuario, index) in usuarios"
+            :key="index"
+            @click="selecionarUsuarioParaAtualizar(usuario)"
+          >
+            <td>{{ usuario.name }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.birthdate.split('T')[0] }}</td>
+            <td>{{ usuario.cellphone }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
- </div>
 </template>
+
 
 <script>
 import TccService from "@/services/TccService";
 
 export default {
- name: "CadastroTcc",
- data() {
-  return {
-   tcc: {
-    numero: "",
-    titulo: "",
-    curso: "",
-    tema: "",
-    aluno: "",
-   },
-   alunos: [],
-  };
- },
- mounted() {
-  //console.log("Componente CadastroTcc montado.");
-  this.carregarAlunos();
- },
- methods: {
-  carregarAlunos() {
-   let self = this;
-   try {
-    console.log("Buscando alunos...");
-    /*let response = await TccService.buscarAlunos();
-    console.log(response);
-    this.alunos = response;
-    console.log(this.alunos);*/
-
-    TccService.buscarAlunos2().then((a) => {
-     self.alunos = a.data;
-    });
-   } catch (error) {
-    console.error("Erro ao buscar alunos:", error);
-    alert("Erro ao carregar a lista de alunos");
-   }
+  name: "CadastroTcc",
+  data() {
+    return {
+      tcc: {
+        numero: "",
+        titulo: "",
+        curso: "",
+        tema: "",
+        aluno: "",
+        orientador: ""
+      },
+      alunos: [],
+      usuarioLogado: null
+    };
   },
-
-  carregarProfessor() {
-   let self = this;
-   try {
-    console.log("Buscando professor...");
-    /*let response = await TccService.buscarAlunos();
-    console.log(response);
-    this.alunos = response;
-    console.log(this.alunos);*/
-
-    TccService.buscarAlunos2().then((a) => {
-     self.alunos = a.data;
-    });
-   } catch (error) {
-    console.error("Erro ao buscar alunos:", error);
-    alert("Erro ao carregar a lista de alunos");
-   }
+  mounted() {
+    this.carregarAlunos();
   },
+  methods: {
+    async carregarAlunos() {
+      try {
+        const response = await TccService.buscarAlunos2();
+        this.alunos = response.data;
+      } catch (error) {
+        console.error("Erro ao buscar alunos:", error);
+        alert("Erro ao carregar a lista de alunos");
+      }
+    },
 
-  async submitForm() {
-   try {
-    console.log("Dados do formulário antes de enviar:", this.tcc);
-    const response = await TccService.cadastrarTCC(this.tcc);
-    console.log("Resposta do backend:", response);
-    alert("Cadastro realizado com sucesso!");
-    this.resetarFormulario();
-   } catch (error) {
-    console.error("Erro ao enviar formulário:", error);
-    alert("Erro ao cadastrar TCC");
-   }
-  },
-  resetarFormulario() {
-   this.tcc = {
-    numero: "",
-    titulo: "",
-    curso: "",
-    tema: "",
-    aluno: "",
-    orientador: "",
-   };
-  },
- },
+    async getIdOrientador() {
+      let getIdOrientador = localStorage.getItem(`dado-usuario`);
+      console.log(getIdOrientador);
+      return getIdOrientador.id
+    },
+
+    async submitForm() {
+      try {
+        console.log("Dados do formulário antes de enviar:", this.tcc);
+        const response = await TccService.cadastrarTCC(this.tcc);
+        console.log("Resposta do backend:", response);
+        alert("Cadastro realizado com sucesso!");
+        this.resetarFormulario();
+      } catch (error) {
+        console.error("Erro ao enviar formulário:", error);
+        alert("Erro ao cadastrar TCC");
+      }
+    },
+    resetarFormulario() {
+      this.tcc = {
+        numero: "",
+        titulo: "",
+        curso: "",
+        tema: "",
+        aluno: "",
+        orientador: "",
+      };
+    }
+  }
 };
 </script>
 
