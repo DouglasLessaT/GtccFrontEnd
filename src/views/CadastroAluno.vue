@@ -2,80 +2,34 @@
   <div class="container">
     <div class="workspace workspace-CadAluno">
       <div class="head">
-        Cadastro de Usuário <button class="btn-action">></button>
+        Cadastro de Usuário
+        <button class="btn-action">></button>
       </div>
 
       <div class="forms">
         <form class="form-addaluno">
-          <input
-            v-model="name"
-            class="input-addaluno"
-            type="text"
-            placeholder="Nome Completo"
-          />
-          <input
-            v-model="email"
-            class="input-addaluno"
-            type="email"
-            placeholder="Email"
-          />
-          <input
-            v-model="birthdate"
-            class="input-addaluno"
-            type="date"
-            placeholder="Data de Nascimento"
-            @input="limitarAno"
-          />
-          <input
-            v-model="cellphone"
-            class="input-addaluno"
-            type="tel"
-            placeholder="Contato"
-          />
+          <input v-model="name" class="input-addaluno" type="text" placeholder="Nome Completo" />
+          <input v-model="email" class="input-addaluno" type="email" placeholder="Email" />
+          <input v-model="birthday" class="input-addaluno" type="date" placeholder="Data de Aniversário" />
+          <input v-model="cellphone" class="input-addaluno" type="tel" placeholder="Contato" />
           <div class="button-group">
-            <input
-              class="btn-default btn-search"
-              type="button"
-              value="Adicionar"
-              @click="adicionarUsuario"
-            />
-            <input
-              class="btn-default btn-search"
-              type="button"
-              value="Atualizar"
-              @click="atualizarUsuario"
-              :disabled="!usuarioSelecionado"
-            />
-            <input
-              class="btn-default btn-search"
-              type="button"
-              value="Excluir"
-              @click="excluirUsuario"
-              :disabled="!usuarioSelecionado"
-            />
+            <input class="btn-default btn-search" type="button" value="Adicionar" @click="adicionarUsuario" />
+            <input class="btn-default btn-search" type="button" value="Atualizar" @click="atualizarUsuario" :disabled="!usuarioSelecionado" />
+            <input class="btn-default btn-search" type="button" value="Excluir" @click="excluirUsuario" :disabled="!usuarioSelecionado" />
           </div>
         </form>
         <table class="custom-table">
           <tr class="table-title">
             <td>Nome</td>
             <td>Email</td>
-            <td>Data de nascimento</td>
             <td>Contato</td>
           </tr>
           <tr v-if="usuarios.length === 0">
-            <td colspan="4" style="text-align: center">
-              Nenhum usuário cadastrado.
-            </td>
+            <td colspan="3" style="text-align: center">Nenhum usuário cadastrado.</td>
           </tr>
-          <tr
-            v-else
-            v-for="(usuario, index) in usuarios"
-            :key="index"
-            @click="selecionarUsuarioParaAtualizar(usuario)"
-          >
+          <tr v-else v-for="(usuario, index) in usuarios" :key="index" @click="selecionarUsuarioParaAtualizar(usuario)">
             <td>{{ usuario.name }}</td>
             <td>{{ usuario.email }}</td>
-            <td>{{ usuario.birthdate.split("T")[0] }}</td>
             <td>{{ usuario.cellphone }}</td>
           </tr>
         </table>
@@ -93,7 +47,7 @@ export default {
     return {
       name: "",
       email: "",
-      birthdate: "",
+      birthday: "", // Adicionado campo para a data de aniversário
       cellphone: "",
       usuarios: [],
       usuarioSelecionado: null,
@@ -104,11 +58,8 @@ export default {
       const novoUsuario = {
         name: this.name,
         email: this.email,
-        birthdate: new Date(this.birthdate).toISOString(),
-        cellphone: this.cellphone,
-        permissoes: [],
-        tccsGerenciados: [],
-        userType: ["PROFESSOR"],
+        birthday: this.birthday, // Inclui a data de aniversário
+        cellphone: this.cellphone
       };
       try {
         const response = await AlunoService.adicionarUsuario(novoUsuario);
@@ -126,17 +77,12 @@ export default {
           id: this.usuarioSelecionado.id,
           name: this.name,
           email: this.email,
-          birthdate: new Date(this.birthdate).toISOString(),
           cellphone: this.cellphone,
-          permissoes: this.usuarioSelecionado.permissoes,
-          tccsGerenciados: this.usuarioSelecionado.tccsGerenciados,
-          userType: this.usuarioSelecionado.userType,
+          birthday: this.birthday // Inclui a data de aniversário
         };
         try {
           await AlunoService.atualizarUsuario(usuarioAtualizado);
-          const index = this.usuarios.findIndex(
-            (usuario) => usuario.id === this.usuarioSelecionado.id
-          );
+          const index = this.usuarios.findIndex(usuario => usuario.id === this.usuarioSelecionado.id);
           this.$set(this.usuarios, index, usuarioAtualizado);
           this.limparCampos();
           alert("Usuário atualizado com sucesso!");
@@ -150,9 +96,7 @@ export default {
       if (this.usuarioSelecionado) {
         try {
           await AlunoService.excluirUsuario(this.usuarioSelecionado.id);
-          this.usuarios = this.usuarios.filter(
-            (usuario) => usuario.id !== this.usuarioSelecionado.id
-          );
+          this.usuarios = this.usuarios.filter(usuario => usuario.id !== this.usuarioSelecionado.id);
           this.limparCampos();
           alert("Usuário excluído com sucesso!");
         } catch (error) {
@@ -165,24 +109,15 @@ export default {
       this.usuarioSelecionado = usuario;
       this.name = usuario.name;
       this.email = usuario.email;
-      this.birthdate = usuario.birthdate.split("T")[0];
+      this.birthday = usuario.birthday; // Preenche a data de aniversário ao selecionar usuário
       this.cellphone = usuario.cellphone;
     },
     limparCampos() {
       this.name = "";
       this.email = "";
-      this.birthdate = "";
+      this.birthday = "";
       this.cellphone = "";
       this.usuarioSelecionado = null;
-    },
-    limitarAno(event) {
-      const date = event.target.value;
-      const year = date.split("-")[0];
-      if (year.length > 4) {
-        event.target.value = `${year.slice(0, 4)}-${date.split("-")[1]}-${
-          date.split("-")[2]
-        }`;
-      }
     },
   },
 };
@@ -298,24 +233,6 @@ export default {
     position: relative;
     height: 80px;
   }
-
-  /*.btn-action {
-     background-color: #ffffff;
-     border: #09a6a3 solid 1px;
-     border-radius: 50%;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     width: 35px;
-     height: 35px;
-     cursor: pointer;
-     font-size: large;
-     color: #09a6a3;
-     position: absolute;
-     right: 10px; 
-     top: 50%; 
-     margin-left: 180px;
- }*/
 
   .btn-action {
     background-color: #ffffff;
