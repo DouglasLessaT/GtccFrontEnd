@@ -3,7 +3,7 @@
     <div class="workspace">
       <div class="head">
         Cadastro de TCC
-        <button class="btn-action">></button>
+        <button @click="$router.push('/cadastrobanca')" class="btn-action">></button>
       </div>
       <div class="forms">
         <form @submit.prevent="submitForm" class="form-cadtcc">
