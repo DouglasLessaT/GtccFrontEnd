@@ -15,6 +15,16 @@ class AuthService {
     {
         path: '/confirmarelatorio', roles: ['ROLE_ADMIN', 'ROLE_PROFESSOR', 'ROLE_COORDENADOR'] 
     }]
+
+    getPermissoesUsuario() {
+        const dados = this.dadosAutenticado();
+        return dados? dados.permissoes : [];
+      }
+    
+    PermissaoParaMenu() {
+        const permissoes = this.getPermissoesUsuario();
+        return permissoes.some(permicao => permicao.authority === 'ROLE_COORDENADOR' || permicao.authority === 'ROLE_ADMIN');
+    }
    
     dadosAutenticado = () => {
      let dados = sessionStorage.getItem("dados-usuario");
