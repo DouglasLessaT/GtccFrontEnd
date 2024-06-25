@@ -52,7 +52,7 @@ footer{
     justify-content: center;
     box-shadow: 0 0 1000px 0 #09a6a38e;
     font-family: "Poiret One", sans-serif;
-    margin-top: 120px;
+    margin-top: 75px;
 }
 
 .forms {
@@ -87,7 +87,60 @@ footer{
     color: #ffffff;
 }
 
-.btn-default {
+
+  
+
+  
+  /* Page Login */
+  .container-login{
+    background-image: url(../assets/logintela.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: "Poiret One", sans-serif;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+  
+  .form-login input {
+      background-color: rgba(237, 235, 201, 1);
+      margin-bottom: 30px;
+      padding: 5px;
+      width: 300px;
+      height: 35px;
+      border: none;
+      font-family: "Poiret One", sans-serif;
+      color: #000000;
+      font-size: large;
+      border-radius: 5px;
+  }
+  
+  .sec-login {
+      background-color: rgb(54, 138, 136);
+      width: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px;
+      margin-right: 500px;
+      padding: 30px;
+      font-family: "Poiret One", sans-serif;
+      text-align: center;
+      border-radius: 10px;
+  }
+
+  .form-login h1{
+    font-family: "Poiret One", sans-serif;
+    font-size: 40px;
+    color: white;
+    margin: 40px;
+    font-weight: bold;
+  }
+
+  .form-login .btn-default{
     cursor: pointer;
     background-color: #000;
     width: 310px;
@@ -96,19 +149,50 @@ footer{
     color: white;
     text-align: right;
     font-size: x-large;
-}
-
-.btn-default:hover {
+    border-radius: 10px;
+    font-size: 19px;
+  }
+  .form-login .btn-default:hover{
     background-color: #ffffff;
     color: #000;
     border: #0000005e solid 1px;
+  }
+  
+
+ /* Page Dash Board */
+
+ input {
+    background-color: rgba(237, 235, 201, 1);
+    margin-bottom: 30px;
+    padding: 5px;
+    width: 300px;
+    height: 35px;
+    border: none;
+    font-family: "Poiret One", sans-serif;
+    color: #000000;
+    font-size: large;
+    border-radius: 5px;
 }
 
-h1 {
-    font-family: "Poiret One", sans-serif;
-    font-size: 70px;
+.btn-default{
+    cursor: pointer;
+    background-color: #000;
+    width: 310px;
+    height: 35px;
+    padding-right: 10px;
     color: white;
-}
+    text-align: center;
+    font-size: x-large;
+    border-radius: 10px;
+    font-size: 19px;
+  }
+.btn-default:hover{
+    background-color: #ffffff;
+    color: #000;
+    border: #0000005e solid 1px;
+  }
+
+
 
 table,
 th,
@@ -129,32 +213,9 @@ td {
     color: #ffffff;
 }
 
-.sec-login {
-    background-color: rgb(54, 138, 136);
-    width: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 30px;
-    margin-right: 500px;
-    padding: 30px;
-    font-family: "Poiret One", sans-serif;
-    text-align: center;
-    border-radius: 10px;
-}
 
-input {
-    background-color: rgba(237, 235, 201, 1);
-    margin-bottom: 30px;
-    padding: 5px;
-    width: 300px;
-    height: 35px;
-    border: none;
-    font-family: "Poiret One", sans-serif;
-    color: #000000;
-    font-size: large;
-    border-radius: 5px;
-}
+
+
 
 /* Page Dashboard */
 
