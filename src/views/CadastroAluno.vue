@@ -124,8 +124,9 @@ export default {
 </script>
 
 <style scoped>
+
 .workspace-CadAluno {
-  margin: 200px;
+  margin: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
