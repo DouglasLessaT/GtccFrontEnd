@@ -138,7 +138,7 @@
             >
               Cadastra
             </button>
-            <button type="button" class="btn btn-primary">Send message</button>
+            <button @click="fechar" type="button" class="btn btn-primary" data-bs-dismiss="modal">Fechar</button>
           </div>
         </div>
       </div>
@@ -185,10 +185,28 @@ export default {
         const response = await LoginService.cadastrarUsuario(this.novousuario);
         console.log("Resposta do backend:", response);
         alert("Cadastro realizado com sucesso!");
+        this.LimparFormulario();
       } catch (error) {
         console.error("Erro ao enviar formulário:", error);
         alert("Erro ao cadastrar Usuario");
       }
+    },
+    LimparFormulario() {
+      this.novousuario = {
+        nome: "",
+        email: "",
+        dataNascimento: "",
+        categoria: "",
+        username: "",
+        password: "",
+        cll: "",
+        //id: '',
+        //tccsManaged: [],
+        permissao: "",
+      };
+    },
+    async fechar() {
+      this.LimparFormulario();
     },
   },
 };
