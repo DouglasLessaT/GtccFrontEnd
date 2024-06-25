@@ -3,7 +3,7 @@
     <div class="workspace workspace-CadAluno">
       <div class="head">
         Cadastro de Usuário
-        <button class="btn-action">></button>
+        <button @click="$router.push('/cadastrotcc')" class="btn-action">></button>
       </div>
 
       <div class="forms">
