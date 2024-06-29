@@ -2,6 +2,7 @@ import axios from "axios";
 import AuthService from "./AuthService";
 
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/aluno";
+const urlBuscaLIstaDeAluno = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
 
 class AlunoService {
   async adicionarUsuario(usuario) {
@@ -47,9 +48,10 @@ class AlunoService {
 
   async buscarUsuarios() {
     try {
-      const response = await axios.get(baseURL, {
+      const response = await axios.get(urlBuscaLIstaDeAluno, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
+          "Content-Type": "application/json",
         },
       });
       return response.data;

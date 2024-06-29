@@ -53,7 +53,24 @@ export default {
       usuarioSelecionado: null,
     };
   },
+  mounted(){
+    this.buscaUsuários();
+  },
   methods: {
+    async buscaUsuários(){
+      try{
+
+        const response = await AlunoService.buscarUsuarios();
+        console.log('Teste ', response);
+        this.usuarios = response ;
+      
+      }catch (error){
+      
+        console.error("Erro ao adicionar usuário:", error);
+        alert("Erro ao buscar lista de usuários");
+     
+      }
+    },
     async adicionarUsuario() {
       const novoUsuario = {
         name: this.name,
@@ -82,10 +99,11 @@ export default {
         };
         try {
           await AlunoService.atualizarUsuario(usuarioAtualizado);
-          const index = this.usuarios.findIndex(usuario => usuario.id === this.usuarioSelecionado.id);
-          this.$set(this.usuarios, index, usuarioAtualizado);
+          //const index = this.usuarios.findIndex(usuario => usuario.id === this.usuarioSelecionado.id);
+          //this.$set(this.usuarios, index, usuarioAtualizado);
           this.limparCampos();
           alert("Usuário atualizado com sucesso!");
+          window.location.reload();
         } catch (error) {
           console.error("Erro ao atualizar usuário:", error);
           alert("Erro ao atualizar usuário");
