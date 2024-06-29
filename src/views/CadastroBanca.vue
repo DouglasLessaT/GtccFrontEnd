@@ -12,10 +12,15 @@
         </div>
 
         <div class="forms">
-          <input v-model="nome" class="input-text_banca" type="text" placeholder="Adicionar Tutores"/>
-          <input v-model="registro" class="input-text_banca" type="text" placeholder="Nº de registro do professor"/>
           
-          <input class="btn-default btn-banca" type="button" value="+" @click="adicionarTutor" :disabled="limiteAlcancado"/>
+          <select class="select-preencher4-tcc" v-model="tcc.tutor">
+              <option value="">Selecione um tutor</option>
+              <option v-for="tutor in tutors" :key="tutor.id" :value="tutor.id">
+                {{ tutor.name }}
+              </option>
+            </select>
+
+          <!-- <input class="btn-default btn-banca" type="button" value="+" @click="adicionarTutor" :disabled="limiteAlcancado"/>
           <input class="btn-default btn-banca" type="button" value="-" @click="excluirTutor" :disabled="limiteAlcancado" style="background-color: #ff0000;">
 
         </div>
@@ -33,121 +38,131 @@
                 <td>{{ tutor.nome }}</td>
                 <td>{{ tutor.registro }}</td>
           </tr>
-        </table>
+        </table> -->
       </div>
-
-          <!-- Agendamento -->
-      <div class="workspace work-schedule">
-        <div class="head">AGENDAMENTO</div>
-
-        <div class="forms-schedule">
-          <input v-model="dtAgenda" class="input-text_banca input-schedule " type="date"/>
-          <input v-model="hrAgenda" class="input-text_banca input-schedule " type="time"/>
-
-          <input class="btn-default btn-banca" type="button" value="+" @click="adicionarAgenda" :disabled="limiteAlcancado"/>
-          <input class="btn-default btn-banca" type="button" value="-" @click="excluirAgenda" :disabled="limiteAlcancado" style="background-color: #ff0000;">
-        </div>
-        <table>
-          <tr class="table-title">
-            <td>Data agendada</td>
-            <td>Horario agendado</td>
-          </tr>
-
-            <tr v-if="agendas.length === 0">
-                <td colspan="4" style="text-align: center">Nenhum agenda selecionado.</td>
-              </tr>
-
-             <tr v-else v-for="(agenda, index) in agendas" :key="index" @click="selecionarAgenda(agenda) ">  
-                <td>{{ agenda.dtAgenda }}</td>
-                <td>{{ agenda.hrAgenda }}</td>
-          </tr>
-        </table>
       </div>
     </div>
   </body>
 </template>
 
 <script>
+
+import TccService from "@/services/TccService";
+
 export default {
-    name: "CadastroBanca",
-    data() {
-      return {
-          nome: "",
-          tutores: [],
-          proximoId: 1,
-          limiteAlcancado: false,
-          tutorSelecionado: null,
-          dtAgenda: "",
-          agendas: [],
-          agendaSelecionado: null,
-          };
+  name: "CadastroTcc",
+  data() {
+    return {
+      tcc: {
+        numero: "",
+        titulo: "",
+        curso: "",
+        tema: "",
+        tutor: "",
+        orientador: "",
+      },
+      tutores: [],
+    };
+  },
+  mounted() {
+    this.carregarTutores();
   },
   methods: {
-      adicionarTutor() {
-          if (this.tutores.length < 2) {
-              this.tutores.push({
-                  id: this.proximoId++,
-                  nome: this.nome,
-                  registro: this.registro,
-                });
-              this.nome = "";
-              this.registro = "";
-              this.limiteAlcancado = this.tutores.length >= 3;
-          } else {
-              alert("Limite de tutores atingido!");
-          }
+    async carregarTutores() {
+      try {
+        console.log("Buscando alunos...");
+        let response = await TccService.buscarTutores();
+        console.log(response);
+        this.tutores = response;
+        console.log(this.tu);
+      } catch (error) {
+        console.error("Erro ao buscar alunos:", error);
+        alert("Erro ao carregar a lista de alunos");
+      }
     },
-
-    selecionarTutor(tutor) {
-         this.tutorSelecionado = tutor;
-         this.nome = tutor.nome;
-         this.registro = tutor.registro;
-     },
-
-    excluirTutor() {
-         if (this.tutorSelecionado) {
-             this.tutores = this.tutores.filter(tutor => tutor.id !== this.tutorSelecionado.id);
-             this.limparCampos();
-         }
-     },
-
-     limparCampos() {
-         this.nome = "";
-         this.registro = "";
-         this.tutorSelecionado = null;
-     },
-
-    //  Agendamento
-    adicionarAgenda() {
-          if (this.agendas.length < 1) {
-              this.agendas.push({
-                  id: this.proximoId++,
-                  dtAgenda: this.dtAgenda,
-                  hrAgenda: this.hrAgenda,
-                });
-              this.dtAgenda = "";
-              this.hrAgenda = "";
-              this.limiteAlcancado = this.agendas.length >= 2;
-          } else {
-              alert("Limite de agendas atingido!");
-          }
-        },
-
-        selecionarAgenda(agenda) {
-         this.agendaSelecionado = agenda;
-         this.dtAgenda = agenda.dtAgenda;
-         this.hrAgenda = agenda.hrAgenda;
-        },
-
-        excluirAgenda() {
-         if (this.agendaSelecionado) {
-             this.agendas = this.agendas.filter(agenda => agenda.id !== this.agendaSelecionado.id);
-             this.limparCampos();
-         }
-       },
-
   },
 };
+
+// export default {
+//     name: "CadastroBanca",
+//     data() {
+//       return {
+//           nome: "",
+//           tutores: [],
+//           proximoId: 1,
+//           limiteAlcancado: false,
+//           tutorSelecionado: null,
+//           dtAgenda: "",
+//           agendas: [],
+//           agendaSelecionado: null,
+//           };
+//   },
+//   methods: {
+//       adicionarTutor() {
+//           if (this.tutores.length < 2) {
+//               this.tutores.push({
+//                   id: this.proximoId++,
+//                   nome: this.nome,
+//                   registro: this.registro,
+//                 });
+//               this.nome = "";
+//               this.registro = "";
+//               this.limiteAlcancado = this.tutores.length >= 3;
+//           } else {
+//               alert("Limite de tutores atingido!");
+//           }
+//     },
+
+//     selecionarTutor(tutor) {
+//          this.tutorSelecionado = tutor;
+//          this.nome = tutor.nome;
+//          this.registro = tutor.registro;
+//      },
+
+//     excluirTutor() {
+//          if (this.tutorSelecionado) {
+//              this.tutores = this.tutores.filter(tutor => tutor.id !== this.tutorSelecionado.id);
+//              this.limparCampos();
+//          }
+//      },
+
+//      limparCampos() {
+//          this.nome = "";
+//          this.registro = "";
+//          this.tutorSelecionado = null;
+//      },
+
+//     //  Agendamento
+//     adicionarAgenda() {
+//           if (this.agendas.length < 1) {
+//               this.agendas.push({
+//                   id: this.proximoId++,
+//                   dtAgenda: this.dtAgenda,
+//                   hrAgenda: this.hrAgenda,
+//                 });
+//               this.dtAgenda = "";
+//               this.hrAgenda = "";
+//               this.limiteAlcancado = this.agendas.length >= 2;
+//           } else {
+//               alert("Limite de agendas atingido!");
+//           }
+//         },
+
+//         selecionarAgenda(agenda) {
+//          this.agendaSelecionado = agenda;
+//          this.dtAgenda = agenda.dtAgenda;
+//          this.hrAgenda = agenda.hrAgenda;
+//         },
+
+//         excluirAgenda() {
+//          if (this.agendaSelecionado) {
+//              this.agendas = this.agendas.filter(agenda => agenda.id !== this.agendaSelecionado.id);
+//              this.limparCampos();
+//          }
+//        },
+
+//   },
+// };
 </script>
 
 <style scoped>
