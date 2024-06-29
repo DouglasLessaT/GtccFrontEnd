@@ -4,9 +4,23 @@ import AuthService from "./AuthService";
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/agenda";
 
 class AgendaService {
+  parser(obj) {
+    return {
+      date: new Date(obj.date).toISOString(),
+      horasComeco: obj.horasComeco,
+      horasFim: obj.horasFim,
+      isLock: obj.isLock,
+    };
+  }
+
   async createAgenda(agenda) {
+    console.log("Teste I", agenda);
+    let agendaAfterParse = this.parser(agenda);
+    console.log("Teste II", agendaAfterParse);
     try {
-      const response = await axios.post(baseURL, agenda, {
+      const url = `${baseURL}`;
+      console.log("URL da agenda ",url);
+      const response = await axios.post(url, agendaAfterParse, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
           "Content-Type": "application/json",
@@ -18,59 +32,17 @@ class AgendaService {
     }
   }
 
-  async updateAgenda(id, agenda) {
+  async getAgendas() {
     try {
-      const response = await axios.put(`${baseURL}/${id}`, agenda, {
+      const url = `${baseURL}`;
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(`Erro ao atualizar agenda: ${error.message}`);
-    }
-  }
-
-  async deleteAgenda(id) {
-    try {
-      const response = await axios.delete(`${baseURL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${AuthService.dados.token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(`Erro ao deletar agenda: ${error.message}`);
-    }
-  }
-
-  async getAllAgendas() {
-    try {
-      const response = await axios.get(`${baseURL}/agendas`, {
-        headers: {
-          Authorization: `Bearer ${AuthService.dados.token}`,
-          "Content-Type": "application/json",
         },
       });
       return response.data;
     } catch (error) {
       throw new Error(`Erro ao buscar agendas: ${error.message}`);
-    }
-  }
-
-  async getAgendaById(id) {
-    try {
-      const response = await axios.get(`${baseURL}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${AuthService.dados.token}`,
-          "Content-Type": "application/json",
-        },
-      });
-      return response.data;
-    } catch (error) {
-      throw new Error(`Erro ao buscar agenda: ${error.message}`);
     }
   }
 }

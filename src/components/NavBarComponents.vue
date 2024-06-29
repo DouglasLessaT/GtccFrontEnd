@@ -111,10 +111,6 @@
                 <input type="time" class="form-control" id="horasFim" v-model="agendaData.horasFim" required />
               </div>
               <div class="mb-3">
-                <label for="descricao" class="col-form-label">Descrição:</label>
-                <textarea class="form-control" id="descricao" v-model="agendaData.description" required></textarea>
-              </div>
-              <div class="mb-3">
                 <label for="isLock" class="col-form-label">Lock:</label>
                 <input type="checkbox" class="form-check-input" id="isLock" v-model="agendaData.isLock" />
               </div>
@@ -156,7 +152,6 @@ export default {
         date: "",
         horasComeco: "",
         horasFim: "",
-        description: "",
         isLock: false
       },
     };
@@ -210,7 +205,6 @@ export default {
         date: "",
         horasComeco: "",
         horasFim: "",
-        description: "",
         isLock: false
         };
         
