@@ -4,7 +4,6 @@ import DashBoard from '../views/DashBoard.vue';
 import CadastroTcc from '../views/CadastroTcc.vue';
 import CadastroAluno from '../views/CadastroAluno.vue';
 import CadastroBanca from '../views/CadastroBanca.vue';
-import ConfirmaRelatorio from '../views/ConfirmaRelatorio.vue';
 import NaoAutorizado from '../views/NaoAutorizadoView.vue'
 
 import LoginService from '../services/LoginService'
@@ -39,12 +38,6 @@ const routes = [
       path: "/cadastrobanca",
       name: 'cadastrobanca',
       component: CadastroBanca
-    },
-
-    {
-      path: "/confirmarelatorio",
-      name: 'confirmarelatorio',
-      component: ConfirmaRelatorio
     },
 
     {
