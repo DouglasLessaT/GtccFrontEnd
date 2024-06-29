@@ -13,24 +13,19 @@
       </div>
       <table>
         <tr class="table-title">
-          <td>Nome</td>
-          <td>Idade</td>
-          <td>Profissão</td>
+          <td>Curso</td>
+          <td>Titulo do Tcc</td>
+          <td>Tema do Tcc</td>
+
         </tr>
-        <tr>
-          <td>Ted</td>
-          <td>22</td>
-          <td>Estudante</td>
+        <tr v-if="usuarios.length === 0">
+            <td colspan="3" style="text-align: center">Nenhum usuário cadastrado.</td>
         </tr>
-        <tr>
-          <td>Ralf</td>
-          <td>26</td>
-          <td>Designer</td>
-        </tr>
-        <tr>
-          <td>Ralf</td>
-          <td>26</td>
-          <td>Designer</td>
+        <tr v-else v-for="(tcc, index) in usuarios" :key="index">
+            <td>{{ tcc.curso }}</td>
+            <td>{{ tcc.title }}</td>
+            <td>{{ tcc.email }}</td>
+
         </tr>
       </table>
     </div>
@@ -38,10 +33,33 @@
 </template>
 
 <script>
+import DashService from "@/services/DashService";
+
 export default {
   name: "DashBoard",
+  data() {
+    return {
+      usuarios: [],
+    };
+  },
+  mounted(){
+    this.buscaUsuários();
+  },
+  methods: {
+    async buscaUsuários(){
+      try{
+        const response = await DashService.buscarTCC();
+        console.log('Teste ', response);
+        this.usuarios = response;
+      }catch (error){
+        console.error("Erro ao buscar usuários:", error);
+        alert("Erro ao buscar lista de usuários");
+      }
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 
