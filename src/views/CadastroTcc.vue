@@ -83,10 +83,17 @@ export default {
     async submitForm() {
       try {
         console.log("Dados do formulário antes de enviar:", this.tcc);
+
+        const idOrientador = JSON.parse(sessionStorage.getItem('dados-usuario')).elementId;
+        this.tcc.orientador = idOrientador;
+        console.log("Resposta do backend:", this.tcc);
+        
         const response = await TccService.cadastrarTCC(this.tcc);
-        console.log("Resposta do backend:", response);
-        alert("Cadastro realizado com sucesso!");
+
+        alert("Cadastro realizado com sucesso!", response);
+      
         this.resetarFormulario();
+      
       } catch (error) {
         console.error("Erro ao enviar formulário:", error);
         alert("Erro ao cadastrar TCC");
