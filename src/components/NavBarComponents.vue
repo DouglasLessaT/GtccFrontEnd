@@ -7,9 +7,10 @@
         </p1>
       </div>
 
+    <div class="nav">
       <div>
         <div v-if="isCoordenador" class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+          <button class="  btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
             aria-expanded="false">
             Menu
           </button>
@@ -24,6 +25,10 @@
           </ul>
         </div>
       </div>
+      <div class="saida-botao">
+        <button type="button" class="btn btn-dark" @click="sair">Sair</button>
+      </div>
+    </div>
     </header>
 
 
@@ -127,6 +132,7 @@
 </template>
 
 <script>
+import LoginService from "@/services/LoginService";
 import CadUser from "../services/CadUser";
 import authService from "../services/AuthService";
 import AgendaService from "../services/AgendaService";
@@ -212,12 +218,29 @@ export default {
         console.error("Erro ao salvar agenda:", error);
         alert("Erro ao salvar agenda");
       }
-    }
+    },
+    sair() {
+      LoginService.deslogar();
+      this.$router.push('/login');
+
+    },
   },
 };
 </script>
 
 <style scoped>
+
+.saida-botao {
+  margin: 5px;
+}
+
+.nav{
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 600px;
+}
+
 .dropdown-item {
   cursor: pointer;
 }
@@ -246,6 +269,6 @@ header {
   font-family: "Poiret One", sans-serif;
   top: 0px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 </style>
