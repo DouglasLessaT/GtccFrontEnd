@@ -14,18 +14,18 @@
       <table>
         <tr class="table-title">
           <td>Curso</td>
-          <td>Titulo do Tcc</td>
-          <td>Tema do Tcc</td>
-
+          <td>Titulo</td>
+          <td>Tema</td>
         </tr>
-        <tr v-if="usuarios.length === 0">
-            <td colspan="3" style="text-align: center">Nenhum usuário cadastrado.</td>
+        <tr v-if="tccs.length === 0">
+          <td colspan="3" style="text-align: center">
+            Nenhum usuário cadastrado.
+          </td>
         </tr>
-        <tr v-else v-for="(tcc, index) in usuarios" :key="index">
-            <td>{{ tcc.curso }}</td>
-            <td>{{ tcc.title }}</td>
-            <td>{{ tcc.email }}</td>
-
+        <tr v-else v-for="(tcc, index) in tccs" :key="index">
+          <td>{{ tcc.curse }}</td>
+          <td>{{ tcc.title }}</td>
+          <td>{{ tcc.theme }}</td>
         </tr>
       </table>
     </div>
@@ -39,19 +39,19 @@ export default {
   name: "DashBoard",
   data() {
     return {
-      usuarios: [],
+      tccs: [],
     };
   },
-  mounted(){
+  mounted() {
     this.buscaUsuários();
   },
   methods: {
-    async buscaUsuários(){
-      try{
-        const response = await DashService.buscarTCC();
-        console.log('Teste ', response);
-        this.usuarios = response;
-      }catch (error){
+    async buscaUsuários() {
+      try {
+        const response = await DashService.buscarTCCs();
+        console.log("Teste ", response);
+        this.tccs = response;
+      } catch (error) {
         console.error("Erro ao buscar usuários:", error);
         alert("Erro ao buscar lista de usuários");
       }
@@ -60,9 +60,7 @@ export default {
 };
 </script>
 
-
 <style scoped>
-
 .btn-default {
   width: 85px;
 }
