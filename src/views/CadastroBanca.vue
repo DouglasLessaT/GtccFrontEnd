@@ -9,11 +9,12 @@
 
       <div class="forms">
         <div>
+        <!--DateTimeFormatter.ofPattern("dd-MM-yyyy");-->
           <label for="agenda">Selecione a Agenda:</label>
           <select v-model="selectedAgenda" id="agenda">
             <option value="">Selecione</option>
             <option v-for="agenda in agendas" :key="agenda.id" :value="agenda.id">
-              {{ formatDate(agenda.data) }}
+              {{ `${formatDate(agenda.date)} - ${formatTime(agenda.horasComeco,agenda.horasFim)}` }}  
             </option>
           </select>
         </div>
@@ -80,6 +81,7 @@ export default {
       try {
         this.professores = await BancaService.getProfessores();
         this.agendas = await BancaService.getAgendasLivres();
+        console.log("Agendas : " ,this.agendas);
         this.tccs = await TccService.getTccs();
       } catch (error) {
         alert('Erro ao buscar dados: ' + error.message);
@@ -100,18 +102,27 @@ export default {
         alert('Erro ao cadastrar banca: ' + error.message);
       }
     },
-    formatDate(dateString) {
-      console.log("Raw date string:", dateString);  // Adicionando log para verificar a data recebida
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) return 'Data Inválida';
+    formatDate(dateArray) {
+      console.log("Raw date string:",  dateArray); 
+
+      const year = dateArray[0];
+      const month = String(dateArray[1]).padStart(2, '0');
+      const day = String(dateArray[2]).padStart(2, '0');
       
-      const day = String(date.getDate()).padStart(2, '0');
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const year = date.getFullYear();
-      const hours = String(date.getHours()).padStart(2, '0');
-      const minutes = String(date.getMinutes()).padStart(2, '0');
-      
-      return `${day}/${month}/${year} - ${hours}:${minutes}`;
+      return `${day}-${month}-${year}`;
+    },
+
+
+    formatTime(horaComeco ,horaFim) {
+
+      let _horaComeco = horaComeco.toString();
+      let _horaFim = horaFim.toString();
+
+      _horaComeco = _horaComeco.split(',');
+      _horaFim = _horaFim.split(',');
+
+      let horas = `${_horaComeco[0]}.${_horaComeco[1]} : ${_horaFim[0]}.${_horaFim[1]}`;
+      return horas;
     },
   },
 };
