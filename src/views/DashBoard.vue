@@ -8,8 +8,18 @@
         </button>
       </div>
       <div class="search">
-        <input class="input-search" type="search" v-model="this.titulo" placeholder="Buscar por titulo" />
-        <input class="btn-default btn-search" type="button" value="Buscar" @click="this.buscarTcc()" />
+        <input
+          class="input-search"
+          type="search"
+          placeholder="Buscar dados"
+          v-model="termoPesquisa"
+        />
+        <input
+          class="btn-default btn-search"
+          type="button"
+          value="Buscar"
+          @click="BuscaTCC(termoPesquisa)"
+        />
       </div>
       <table>
         <tr class="table-title">
@@ -18,12 +28,12 @@
           <td>Tema</td>
         </tr>
         <tr v-if="tccs.length === 0">
-            <td colspan="3" style="text-align: center">Nenhum tcc cadastrado.</td>
+          <td colspan="3" style="text-align: center">Nenhum Tcc cadastrado.</td>
         </tr>
         <tr v-else v-for="(tcc, index) in tccs" :key="index">
-            <td>{{ tcc.curse }}</td>
-            <td>{{ tcc.title }}</td>
-            <td>{{ tcc.theme }}</td>
+          <td>{{ tcc.curse }}</td>
+          <td>{{ tcc.title }}</td>
+          <td>{{ tcc.theme }}</td>
         </tr>
       </table>
     </div>
@@ -37,45 +47,49 @@ export default {
   name: "DashBoard",
   data() {
     return {
-      titulo: "",
       tccs: [],
+      termoPesquisa: "",
     };
   },
-  mounted(){
-    this.buscaTccs();
+  mounted() {
+    this.ListarTccs();
   },
   methods: {
-    async buscarTcc(){
-
-      if(this.titulo == null){
-        return alert("preencha o campo de busca");
-      }
-
-      try{
-        
-        const response = await DashService.buscarTcc(this.titulo);
-        console.log('Teste ', response);
-        this.limpaListaDeTcc();
-        this.tccs.push(response);
-
-      }catch (error){
-        console.error("Erro ao buscar tcc:", error);
-        alert("Erro ao buscar lista de tcc");
-      }
-    },
-    async buscaTccs(){
-      try{
+    async ListarTccs() {
+      try {
         const response = await DashService.buscarTCCs();
-        console.log('Teste ', response);
+        console.log("Teste ", response);
         this.tccs = response;
-      }catch (error){
-        console.error("Erro ao buscar usuários:", error);
-        alert("Erro ao buscar lista de usuários");
+      } catch (error) {
+        console.error("Erro ao lista TCCs:", error);
+        alert("Erro ao lista TCCs");
       }
     },
-    limpaListaDeTcc(){
-      this.tccs = [];
-    }
+    async BuscaTCC(termoPesquisa = "") {
+      try {
+        const response = await DashService.buscarTCCs();
+        let filteredResults = response;
+        // Filtra os resultados apenas se houver um termo de pesquisa
+        if (termoPesquisa) {
+          filteredResults = response.filter(
+            (tcc) =>
+              tcc &&
+              typeof tcc.title === "string" &&
+              (tcc.title.toLowerCase().includes(termoPesquisa.toLowerCase()) ||
+                tcc.theme.toLowerCase().includes(termoPesquisa.toLowerCase()))
+          );
+        }
+        // Verifica se os resultados filtrados estão vazios
+        if (filteredResults.length === 0) {
+          alert("Nenhum resultado encontrado.");
+        } else {
+          this.tccs = filteredResults;
+        }
+      } catch (error) {
+        console.error("Erro ao buscar TCCs:", error);
+        alert("Erro ao buscar TCCs");
+      }
+    },
   },
 };
 </script>
