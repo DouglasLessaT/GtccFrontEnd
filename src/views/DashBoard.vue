@@ -8,8 +8,8 @@
         </button>
       </div>
       <div class="search">
-        <input class="input-search" type="search" placeholder="Buscar dados" />
-        <input class="btn-default btn-search" type="button" value="Buscar" />
+        <input class="input-search" type="search" v-model="this.titulo" placeholder="Buscar por titulo" />
+        <input class="btn-default btn-search" type="button" value="Buscar" @click="this.buscarTcc()" />
       </div>
       <table>
         <tr class="table-title">
@@ -18,14 +18,12 @@
           <td>Tema</td>
         </tr>
         <tr v-if="tccs.length === 0">
-          <td colspan="3" style="text-align: center">
-            Nenhum usuário cadastrado.
-          </td>
+            <td colspan="3" style="text-align: center">Nenhum tcc cadastrado.</td>
         </tr>
         <tr v-else v-for="(tcc, index) in tccs" :key="index">
-          <td>{{ tcc.curse }}</td>
-          <td>{{ tcc.title }}</td>
-          <td>{{ tcc.theme }}</td>
+            <td>{{ tcc.curse }}</td>
+            <td>{{ tcc.title }}</td>
+            <td>{{ tcc.theme }}</td>
         </tr>
       </table>
     </div>
@@ -39,23 +37,45 @@ export default {
   name: "DashBoard",
   data() {
     return {
+      titulo: "",
       tccs: [],
     };
   },
-  mounted() {
-    this.buscaUsuários();
+  mounted(){
+    this.buscaTccs();
   },
   methods: {
-    async buscaUsuários() {
-      try {
+    async buscarTcc(){
+
+      if(this.titulo == null){
+        return alert("preencha o campo de busca");
+      }
+
+      try{
+        
+        const response = await DashService.buscarTcc(this.titulo);
+        console.log('Teste ', response);
+        this.limpaListaDeTcc();
+        this.tccs.push(response);
+
+      }catch (error){
+        console.error("Erro ao buscar tcc:", error);
+        alert("Erro ao buscar lista de tcc");
+      }
+    },
+    async buscaTccs(){
+      try{
         const response = await DashService.buscarTCCs();
-        console.log("Teste ", response);
+        console.log('Teste ', response);
         this.tccs = response;
-      } catch (error) {
+      }catch (error){
         console.error("Erro ao buscar usuários:", error);
         alert("Erro ao buscar lista de usuários");
       }
     },
+    limpaListaDeTcc(){
+      this.tccs = [];
+    }
   },
 };
 </script>
