@@ -1,7 +1,9 @@
 import axios from "axios";
 import AuthService from "./AuthService";
 
+const baseURLCreateBanca = "http://localhost:8083/gtcc/coordenacao/tcc/v1/apresentacao";
 const baseURLGetProfessores = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/Professores";
+const baseURLGetAgendasLivres = "http://localhost:8083/gtcc/coordenacao/tcc/v1/agendasLivres";
 
 class BancaService {
   parser(obj) {
@@ -9,12 +11,10 @@ class BancaService {
       idAgenda: obj.idAgenda,
       idTcc: obj.idTcc,
       member1: {
-        id: obj.member1.id,
-        name: obj.member1.name,
+        id: obj.professor.id,
       },
       member2: {
-        id: obj.member2.id,
-        name: obj.member2.name,
+        id: obj.professor.id,
       }
     };
   }
@@ -24,7 +24,7 @@ class BancaService {
     let bancaAfterParse = this.parser(banca);
     console.log("Teste II", bancaAfterParse);
     try {
-      const url = `${baseURLGetProfessores}`;
+      const url = `${baseURLCreateBanca}`;
       console.log("URL da banca ", url);
       const response = await axios.post(url, bancaAfterParse, {
         headers: {
@@ -49,6 +49,20 @@ class BancaService {
       return response.data;
     } catch (error) {
       throw new Error(`Erro ao buscar professores: ${error.message}`);
+    }
+  }
+
+  async getAgendasLivres() {
+    try {
+      const url = `${baseURLGetAgendasLivres}`;
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${AuthService.dados.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new Error(`Erro ao buscar agendas livres: ${error.message}`);
     }
   }
 }

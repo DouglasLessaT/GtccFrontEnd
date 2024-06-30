@@ -1,218 +1,153 @@
-
 <template>
-  <body>
-    <div class="container">
-      <!-- Cadastro da Banca -->
-      <div class="workspace">
-        <div class="head">
-          CADASTRO DA BANCA
-          <button class="btn-action" type="submit"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-          <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
-          </svg></button>
-        </div>
-
-        <div class="forms">
-          
-          <select class="select-preencher4-tcc" v-model="tcc.tutor">
-              <option value="">Selecione um tutor</option>
-              <option v-for="tutor in tutors" :key="tutor.id" :value="tutor.id">
-                {{ tutor.name }}
-              </option>
-            </select>
-
-          <!-- <input class="btn-default btn-banca" type="button" value="+" @click="adicionarTutor" :disabled="limiteAlcancado"/>
-          <input class="btn-default btn-banca" type="button" value="-" @click="excluirTutor" :disabled="limiteAlcancado" style="background-color: #ff0000;">
-
-        </div>
-        <table>
-          <tr class="table-title">
-            <td>Nome do Tutor</td>
-            <td>Numero de registro</td>
-          </tr>
-
-            <tr v-if="tutores.length === 0">
-                <td colspan="4" style="text-align: center">Nenhum tutor selecionado.</td>
-              </tr>
-
-             <tr v-else v-for="(tutor, index) in tutores" :key="index" @click="selecionarTutor(tutor) ">  
-                <td>{{ tutor.nome }}</td>
-                <td>{{ tutor.registro }}</td>
-          </tr>
-        </table> -->
+  <div class="container">
+    <!-- Cadastro da Banca -->
+    <div class="workspace">
+      <div class="head">
+        CADASTRO DA BANCA
+        <button @click="$router.push('/cadastrobanca')" class="btn-action">></button>
       </div>
+
+      <div class="forms">
+        <div>
+          <label for="agenda">Selecione a Agenda:</label>
+          <select v-model="selectedAgenda" id="agenda">
+            <option value="">Selecione</option>
+            <option v-for="agenda in agendas" :key="agenda.id" :value="agenda.id">
+              {{ formatDate(agenda.data) }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="tcc">Selecione o TCC:</label>
+          <select v-model="selectedTcc" id="tcc">
+            <option value="">Selecione</option>
+            <option v-for="tcc in tccs" :key="tcc.id" :value="tcc.id">
+              {{ tcc.title }} - Orientador: {{ tcc.orientador?.name }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="member1">Selecione o Membro 1:</label>
+          <select v-model="selectedMember1" id="member1">
+            <option value="">Selecione</option>
+            <option v-for="prof in professores" :key="prof.id" :value="prof.id">
+              {{ prof.name }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label for="member2">Selecione o Membro 2:</label>
+          <select v-model="selectedMember2" id="member2">
+            <option value="">Selecione</option>
+            <option v-for="prof in professores" :key="prof.id" :value="prof.id">
+              {{ prof.name }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <button @click="handleSubmit" class="btn-cadastro-agenda">Cadastrar Banca</button>
+        </div>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script>
-
-import TccService from "@/services/TccService";
+import BancaService from '@/services/BancaService';
+import TccService from '@/services/TccService';
 
 export default {
-  name: "CadastroTcc",
   data() {
     return {
-      tcc: {
-        numero: "",
-        titulo: "",
-        curso: "",
-        tema: "",
-        tutor: "",
-        orientador: "",
-      },
-      tutores: [],
+      professores: [],
+      agendas: [],
+      tccs: [],
+      selectedMember1: '',
+      selectedMember2: '',
+      selectedAgenda: '',
+      selectedTcc: '',
     };
   },
   mounted() {
-    this.carregarTutores();
+    this.fetchData();
   },
   methods: {
-    async carregarTutores() {
+    async fetchData() {
       try {
-        console.log("Buscando alunos...");
-        let response = await TccService.buscarTutores();
-        console.log(response);
-        this.tutores = response;
-        console.log(this.tu);
+        this.professores = await BancaService.getProfessores();
+        this.agendas = await BancaService.getAgendasLivres();
+        this.tccs = await TccService.getTccs();
       } catch (error) {
-        console.error("Erro ao buscar alunos:", error);
-        alert("Erro ao carregar a lista de alunos");
+        alert('Erro ao buscar dados: ' + error.message);
       }
+    },
+    async handleSubmit() {
+      const banca = {
+        idAgenda: this.selectedAgenda,
+        idTcc: this.selectedTcc,
+        member1: this.professores.find((prof) => prof.id === this.selectedMember1),
+        member2: this.professores.find((prof) => prof.id === this.selectedMember2),
+      };
+
+      try {
+        await BancaService.createBanca(banca);
+        alert('Banca cadastrada com sucesso!');
+      } catch (error) {
+        alert('Erro ao cadastrar banca: ' + error.message);
+      }
+    },
+    formatDate(dateString) {
+      console.log("Raw date string:", dateString);  // Adicionando log para verificar a data recebida
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Data Inválida';
+      
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+      return `${day}/${month}/${year} - ${hours}:${minutes}`;
     },
   },
 };
-
-// export default {
-//     name: "CadastroBanca",
-//     data() {
-//       return {
-//           nome: "",
-//           tutores: [],
-//           proximoId: 1,
-//           limiteAlcancado: false,
-//           tutorSelecionado: null,
-//           dtAgenda: "",
-//           agendas: [],
-//           agendaSelecionado: null,
-//           };
-//   },
-//   methods: {
-//       adicionarTutor() {
-//           if (this.tutores.length < 2) {
-//               this.tutores.push({
-//                   id: this.proximoId++,
-//                   nome: this.nome,
-//                   registro: this.registro,
-//                 });
-//               this.nome = "";
-//               this.registro = "";
-//               this.limiteAlcancado = this.tutores.length >= 3;
-//           } else {
-//               alert("Limite de tutores atingido!");
-//           }
-//     },
-
-//     selecionarTutor(tutor) {
-//          this.tutorSelecionado = tutor;
-//          this.nome = tutor.nome;
-//          this.registro = tutor.registro;
-//      },
-
-//     excluirTutor() {
-//          if (this.tutorSelecionado) {
-//              this.tutores = this.tutores.filter(tutor => tutor.id !== this.tutorSelecionado.id);
-//              this.limparCampos();
-//          }
-//      },
-
-//      limparCampos() {
-//          this.nome = "";
-//          this.registro = "";
-//          this.tutorSelecionado = null;
-//      },
-
-//     //  Agendamento
-//     adicionarAgenda() {
-//           if (this.agendas.length < 1) {
-//               this.agendas.push({
-//                   id: this.proximoId++,
-//                   dtAgenda: this.dtAgenda,
-//                   hrAgenda: this.hrAgenda,
-//                 });
-//               this.dtAgenda = "";
-//               this.hrAgenda = "";
-//               this.limiteAlcancado = this.agendas.length >= 2;
-//           } else {
-//               alert("Limite de agendas atingido!");
-//           }
-//         },
-
-//         selecionarAgenda(agenda) {
-//          this.agendaSelecionado = agenda;
-//          this.dtAgenda = agenda.dtAgenda;
-//          this.hrAgenda = agenda.hrAgenda;
-//         },
-
-//         excluirAgenda() {
-//          if (this.agendaSelecionado) {
-//              this.agendas = this.agendas.filter(agenda => agenda.id !== this.agendaSelecionado.id);
-//              this.limparCampos();
-//          }
-//        },
-
-//   },
-// };
 </script>
 
 <style scoped>
-/* Layout Cadastro da banca */
-.btn-banca {
-  font-weight: bold;
-  width: 35px;
+.container {
+  padding: 20px;
 }
-
-.input-text_banca {
-  height: 25px;
+.workspace {
+  margin-top: 20px;
 }
-
-.btn-action_banca {
-  background-color: #ff0000b9;
-  color: #ffffff;
-  width: 35px;
-  padding: 5px;
-  margin: 0;
+.head {
+  font-size: 20px;
+  margin-bottom: 20px;
 }
-.btn-action_banca:hover {
-  background-color: #000000;
-  color: #ffffff;
-  border: none;
-}
-input{
-  margin: 5px;
-}
-
-/* Layout Agendamento */
-.work-schedule {
-  margin-left: 15px;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-}
-.forms-schedule {
+.forms {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 }
-.input-schedule {
-  margin: 5px;
-  width: 130px;
-  height: 25px;
+label {
+  margin-bottom: 5px;
 }
-.btn-schedule {
-  font-weight: bold;
-  width: 35px;
-  margin: 5px;
+select {
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.btn-action {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+.btn-action:hover {
+  background-color: #0056b3;
 }
 </style>
-
