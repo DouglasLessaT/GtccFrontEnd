@@ -2,6 +2,7 @@ import axios from "axios";
 import AuthService from "./AuthService";
 
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/agenda";
+const baseURLGetAgenda = "http://localhost:8083/gtcc/coordenacao/tcc/v1/agendas";
 
 class AgendaService {
   parser(obj) {
@@ -34,7 +35,7 @@ class AgendaService {
 
   async getAgendas() {
     try {
-      const url = `${baseURL}`;
+      const url = `${baseURLGetAgenda}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,

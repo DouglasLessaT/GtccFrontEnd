@@ -8,52 +8,76 @@
           <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
           </svg></button>
       </div>
+      <form @submit.prevent="handleSubmit">
+        <div class="forms">
+          <div>
+            <label for="agenda">Selecione:</label>
+            <select v-model="selectedAgenda" id="agenda">
+              <option value="">Agenda</option>
+              <option v-for="agenda in agendas" :key="agenda.id" :value="agenda.id">
+                {{ `${formatDate(agenda.date)} - ${formatTime(agenda.horasComeco, agenda.horasFim)}` }}
+              </option>
+            </select>
+          </div>
 
-      <div class="forms">
-        
-        <div class="form-banca">
-          <label for="agenda">Selecione a Agenda:</label>
-          <select v-model="selectedAgenda" id="agenda">
-            <option value="">Selecione</option>
-            <option v-for="agenda in agendas" :key="agenda.id" :value="agenda.id">
-              {{ `${formatDate(agenda.date)} - ${formatTime(agenda.horasComeco,agenda.horasFim)}` }}  
-            </option>
-          </select>
-        </div>
+          <div>
+            <label for="tcc">Selecione:</label>
+            <select v-model="selectedTcc" id="tcc">
+              <option value="">TCC</option>
+              <option v-for="tcc in tccs" :key="tcc.id" :value="tcc.id">
+                {{ tcc.title }} -  {{ tcc.orientador?.name }}
+              </option>
+            </select>
+          </div>
 
-        <div class="form-banca">
-          <label for="tcc">Selecione o TCC:</label>
-          <select v-model="selectedTcc" id="tcc">
-            <option value="">Selecione</option>
-            <option v-for="tcc in tccs" :key="tcc.id" :value="tcc.id">
-              {{ tcc.title }} - Orientador: {{ tcc.orientador?.name }}
-            </option>
-          </select>
+          <div>
+            <label for="member1">Selecione:</label>
+            <div>
+              <select v-model="selectedMember1" id="member1">
+              <option value="">Membro 1</option>
+              <option v-for="prof in professores" :key="prof.id" :value="prof.id">
+                {{ prof.name }}
+              </option>
+            </select>
+            
+            <select v-model="selectedMember2" id="member2">
+              <option value="">Membro 2</option>
+              <option v-for="prof in professores" :key="prof.id" :value="prof.id">
+                {{ prof.name }}
+              </option>
+            </select>
+            </div>
+          </div>
         </div>
-
-        <div class="form-banca">
-          <label for="member1">Selecione o Membro 1:</label>
-          <select v-model="selectedMember1" id="member1">
-            <option value="">Selecione</option>
-            <option v-for="prof in professores" :key="prof.id" :value="prof.id">
-              {{ prof.name }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-banca">
-          <label for="member2">Selecione o Membro 2:</label>
-          <select v-model="selectedMember2" id="member2">
-            <option value="">Selecione</option>
-            <option v-for="prof in professores" :key="prof.id" :value="prof.id">
-              {{ prof.name }}
-            </option>
-          </select>
-        </div>
-      </div>
+      </form>
+      
       <div>
-          <button @click="handleSubmit" class="btn-cadastro-agenda btn-action_banca">Cadastrar Banca</button>
-        </div>
+          <button type="submit" class="btn-cadastro-agenda">Cadastrar Banca</button>
+      </div>
+
+      <table class="custom-table">
+        <thead>
+          <tr class="table-title">
+            <th>Data - Horário</th>
+            <th>TCC</th>
+            <!-- <th>Orientador TCC</th> -->
+            <th>Membro 1</th>
+            <th>Membro 2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-if="bancas.length === 0">
+            <td colspan="5" style="text-align: center">Nenhuma banca cadastrada.</td>
+          </tr>
+          <tr v-else v-for="banca in bancas" :key="banca.id">
+            <td>{{ `${formatDate(banca.agendaDate)} - ${formatTime(banca.horasComeco, banca.horasFim)}` }}</td>
+            <td>{{ banca.tccTitle }}</td>
+            <!-- <td>{{ banca.orientadorName }}</td> -->
+            <td>{{ banca.member1?.name || '' }}</td>
+            <td>{{ banca.member2?.name || '' }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -61,6 +85,7 @@
 <script>
 import BancaService from '@/services/BancaService';
 import TccService from '@/services/TccService';
+import AgendaService from '@/services/AgendaService';
 
 export default {
   data() {
@@ -68,6 +93,7 @@ export default {
       professores: [],
       agendas: [],
       tccs: [],
+      bancas: [],
       selectedMember1: '',
       selectedMember2: '',
       selectedAgenda: '',
@@ -76,6 +102,7 @@ export default {
   },
   mounted() {
     this.fetchData();
+    this.fetchBancas();
   },
   methods: {
     async fetchData() {
@@ -86,6 +113,29 @@ export default {
         this.tccs = await TccService.getTccs();
       } catch (error) {
         alert('Erro ao buscar dados: ' + error.message);
+      }
+    },
+    async fetchBancas() {
+      try {
+        const responseBancas = await BancaService.getApresentacoes();
+        const responseTccs = await TccService.getTccs();
+        const responseAgendas = await AgendaService.getAgendas();
+
+        this.bancas = responseBancas.map(banca => {
+          const tcc = responseTccs.find(tcc => tcc.id === banca.idTcc);
+          const agenda = responseAgendas.find(agenda => agenda.id === banca.idAgenda);
+
+          return {
+            ...banca,
+            tccTitle: tcc ? tcc.title : '',
+            orientadorName: tcc && tcc.orientador ? tcc.orientador.name : '',
+            agendaDate: agenda ? agenda.date : '',
+            horasComeco: agenda ? agenda.horasComeco : '',
+            horasFim: agenda ? agenda.horasFim : ''
+          };
+        });
+      } catch (error) {
+        alert('Erro ao buscar bancas: ' + error.message);
       }
     },
     async handleSubmit() {
@@ -99,12 +149,13 @@ export default {
       try {
         await BancaService.createBanca(banca);
         alert('Banca cadastrada com sucesso!');
+        this.fetchBancas();
       } catch (error) {
         alert('Erro ao cadastrar banca: ' + error.message);
       }
     },
     formatDate(dateArray) {
-      console.log("Raw date string:",  dateArray); 
+      console.log("Raw date string:", dateArray); 
 
       const year = dateArray[0];
       const month = String(dateArray[1]).padStart(2, '0');
@@ -112,10 +163,7 @@ export default {
       
       return `${day}-${month}-${year}`;
     },
-
-
-    formatTime(horaComeco ,horaFim) {
-
+    formatTime(horaComeco, horaFim) {
       let _horaComeco = horaComeco.toString();
       let _horaFim = horaFim.toString();
 
@@ -128,7 +176,6 @@ export default {
   },
 };
 </script>
-
 <style scoped>
 .container {
   padding: 20px;
@@ -139,6 +186,9 @@ export default {
 .head {
   font-size: 20px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .forms {
   display: flex;
@@ -156,48 +206,78 @@ select {
   padding: 5px;
   margin-bottom: 10px;
 }
-/* .btn-action {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-.btn-action:hover {
-  background-color: #0056b3;
-} */
-.btn-action_banca {
+
+.btn-cadastro-agenda{
   background-color: #09a6a3;
+  border-top-left-radius: 0px;
   font-weight: bold;
-  border: none;
-  margin: 15px;
-  color: #ffffff;
-  padding: 5px;
+  border: #087270 solid 1px;
+  color:#f1f1f1;
 }
-.btn-action_banca:hover {
-  background-color: #ffffff;
-  color: #000000;
-  border: #000000 solid 1px;
+.btn-cadastro-agenda:hover {
+  background-color: #087270;
 }
 
-@media screen and (max-width: 600px) {
-  .container {
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.table-title {
+  background-color: #09a6a3;
+  color: white;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+.workspace {
+    justify-items: center;
+    padding: 2px;
+}
+.btn-action{
+  margin-top: 40px;
+    position: relative;
+    margin-right: 100px;
+}
+
+.head {
     width: 100%;
-    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     box-sizing: border-box;
+    background-color: #009688;
+    color: white;
+    position: relative;
+    height: 80px;
   }
 
+@media (max-width: 768px) {
   .forms {
     margin-left: 12px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     width: 100%;
     margin-top: 5px;
   }
 
- 
-.head {
+  .container {
+    width: 100%;
+    margin-top: 20%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 2px;
+    padding: 2px;
+  }
+
+  .head {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -214,13 +294,12 @@ select {
     background-color: #ffffff;
     border: #09a6a3 solid 1px;
     border-radius: 50%;
-    display: grid;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 35px;
     height: 35px;
     cursor: pointer;
-    font-size: large;
     color: #09a6a3;
     margin-top: 35px;
     position: relative;
@@ -232,5 +311,6 @@ select {
     color: #ffffff;
     border: 2px solid #ffffff;
   }
+
 }
 </style>

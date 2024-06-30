@@ -100,19 +100,19 @@
             <form>
               <div class="mb-3">
                 <label for="data" class="col-form-label">Data:</label>
-                <input type="date" class="form-control" id="data" v-model="agendaData.date" required />
+                <input type="date" class="form-control" id="data" v-model="agendaDate.date" required />
               </div>
               <div class="mb-3">
                 <label for="horasComeco" class="col-form-label">Hora de Início:</label>
-                <input type="time" class="form-control" id="horasComeco" v-model="agendaData.horasComeco" required />
+                <input type="time" class="form-control" id="horasComeco" v-model="agendaDate.horasComeco" required />
               </div>
               <div class="mb-3">
                 <label for="horasFim" class="col-form-label">Hora de Fim:</label>
-                <input type="time" class="form-control" id="horasFim" v-model="agendaData.horasFim" required />
+                <input type="time" class="form-control" id="horasFim" v-model="agendaDate.horasFim" required />
               </div>
               <div class="mb-3">
                 <label for="isLock" class="col-form-label">Lock:</label>
-                <input type="checkbox" class="form-check-input" id="isLock" v-model="agendaData.isLock" />
+                <input type="checkbox" class="form-check-input" id="isLock" v-model="agendaDate.isLock" />
               </div>
 
             </form>
@@ -148,7 +148,7 @@ export default {
 
         permissao: "",
       },
-      agendaData: {
+      agendaDate: {
         date: "",
         horasComeco: "",
         horasFim: "",
@@ -167,7 +167,7 @@ export default {
         if (this.novousuario.categoria === "PROFESSOR") {
           this.novousuario.permissao = ["ROLE_PROFESSOR", "ROLE_USER"];
         } else {
-          this.novousuario.permissao = ["ROLE_COORDENADOR", "ROLE_USER"];
+          this.novousuario.permissao = ["ROLE_PROFESSOR","ROLE_COORDENADOR", "ROLE_USER"];
         }
         console.log("Dados do formulário antes de enviar:", this.novousuario);
         const response = await CadUser.cadastrarUsuario(this.novousuario);
@@ -198,10 +198,10 @@ export default {
     },
     async salvarAgenda() {
       try {
-        const response = await AgendaService.createAgenda(this.agendaData);
+        const response = await AgendaService.createAgenda(this.agendaDate);
         console.log("Resposta do backend:", response);
         alert("Agenda salva com sucesso!");
-        this.agendaData = {
+        this.agendaDate = {
         date: "",
         horasComeco: "",
         horasFim: "",

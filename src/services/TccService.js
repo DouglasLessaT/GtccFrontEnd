@@ -2,7 +2,7 @@ import axios from "axios";
 import AuthService from "./AuthService";
 
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/tcc";
-const baseURLGetTcc ="http://localhost:8083/gtcc/coordenacao/tcc/v1/tccs"
+const baseURLGetTccs ="http://localhost:8083/gtcc/coordenacao/tcc/v1/tccs"
 const baseURLGetAlunos = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
 
 class TccService {
@@ -49,7 +49,8 @@ class TccService {
   }
   async getTccs() {
     try {
-      const response = await axios.get(baseURLGetTcc, {
+      const url = baseURLGetTccs;
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
         },
@@ -59,7 +60,6 @@ class TccService {
       throw new Error(`Erro ao buscar TCCs: ${error.message}`);
     }
   }
-
 }
 
 
