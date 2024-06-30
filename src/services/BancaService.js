@@ -10,12 +10,8 @@ class BancaService {
     return {
       idAgenda: obj.idAgenda,
       idTcc: obj.idTcc,
-      member1: {
-        id: obj.professor.id,
-      },
-      member2: {
-        id: obj.professor.id,
-      }
+      member1:  obj.professor.id,
+      member2: obj.professor.id,
     };
   }
 
