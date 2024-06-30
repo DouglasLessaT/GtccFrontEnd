@@ -19,7 +19,7 @@ class DashService{
             throw new Error(`Erro ao buscar tccs: ${error.message}`);
           }
     }
-
+    //Função de busca nãp está sendo usada no momento pois uso a mesma função a cima para buscar...
     async buscarTcc(title) {
 
         if(title == null){
@@ -40,7 +40,6 @@ class DashService{
           throw new Error(`Erro ao buscar o tcc: ${error.message}`);
         }
     }
-
 }
 
 export default new DashService();
