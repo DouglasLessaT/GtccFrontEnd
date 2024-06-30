@@ -3,7 +3,7 @@
     <header class="head">
       <div id="Logo">
         <p1 @click="$router.push('/')">
-          GTCC
+          <img id="logoApp" src="@\assets\unisalesLogo.svg">
         </p1>
       </div>
 
@@ -237,6 +237,9 @@ export default {
 
 .dropdown-item {
   cursor: pointer;
+}
+#logoApp{
+  height: 40px;
 }
 
 .btn {

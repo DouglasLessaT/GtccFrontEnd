@@ -1,7 +1,11 @@
 <template>
     <body>
         <header class="head">
-            GTCC
+            <div id="Logo">
+        <p1 @click="$router.push('/')">
+          <img id="logoApp" src="@\assets\unisalesLogo.svg">
+        </p1>
+      </div>
         </header>
     </body>
     
@@ -24,7 +28,9 @@
   header{
       position: fixed;
   }
-
+  #logoApp{
+  height: 40px;
+}
   .head{
       background-color: #09a6a3;
       display: flex;
