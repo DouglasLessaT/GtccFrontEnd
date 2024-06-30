@@ -3,7 +3,9 @@ import AuthService from "./AuthService";
 
 const baseURL = "http://localhost:8083/gtcc/coordenacao/tcc/v1/tcc";
 const baseURLGetTcc ="http://localhost:8083/gtcc/coordenacao/tcc/v1/tccs"
-const baseURLGetAlunos = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
+//const baseURLGetAlunos = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunos";
+const urlBUscaAlunosSemTcc = "http://localhost:8083/gtcc/coordenacao/tcc/v1/Professor/alunofree/";
+
 
 class TccService {
   parser(obj) {
@@ -36,7 +38,7 @@ class TccService {
 
   async buscarAlunos() {
     try {
-      const url = `${baseURLGetAlunos}`;
+      const url = `${urlBUscaAlunosSemTcc}`;
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
