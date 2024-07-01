@@ -51,7 +51,8 @@ class TccService {
   }
   async getTccs() {
     try {
-      const response = await axios.get(baseURLGetTcc, {
+      const url = baseURLGetTccs;
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${AuthService.dados.token}`,
         },
@@ -61,7 +62,6 @@ class TccService {
       throw new Error(`Erro ao buscar TCCs: ${error.message}`);
     }
   }
-
 }
 
 

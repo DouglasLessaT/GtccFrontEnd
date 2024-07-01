@@ -32,12 +32,6 @@
                 {{ aluno.name }}
               </option>
             </select>
-            <input
-              type="number"
-              class="input-preencher1-tcc"
-              placeholder="Número de TCC"
-              v-model="tcc.numero"
-            />
           </div>
           <button type="submit" class="btn-submit">Enviar</button>
         </form>
@@ -54,7 +48,6 @@ export default {
   data() {
     return {
       tcc: {
-        numero: "",
         titulo: "",
         curso: "",
         tema: "",
@@ -101,7 +94,6 @@ export default {
     },
     resetarFormulario() {
       this.tcc = {
-        numero: "",
         titulo: "",
         curso: "",
         tema: "",
