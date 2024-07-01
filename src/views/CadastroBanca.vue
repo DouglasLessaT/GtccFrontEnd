@@ -110,7 +110,7 @@ export default {
         this.professores = await BancaService.getProfessores();
         this.agendas = await BancaService.getAgendasLivres();
         console.log("Agendas : " ,this.agendas);
-        this.tccs = await TccService.getTccs();
+        this.tccs = await TccService.getTccsSemApresentacao();
       } catch (error) {
         alert('Erro ao buscar dados: ' + error.message);
       }
