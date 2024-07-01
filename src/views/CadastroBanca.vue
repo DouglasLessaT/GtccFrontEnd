@@ -52,7 +52,7 @@
       </form>
       
       <div>
-          <button type="submit" class="btn-cadastro-agenda">Cadastrar Banca</button>
+          <button type="submit" class="btn-cadastro-agenda" @click="handleSubmit()">Cadastrar Banca</button>
       </div>
 
       <table class="custom-table">
